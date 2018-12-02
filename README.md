@@ -5,7 +5,8 @@ Network
   - iptables conntrack_max/pf states
     - todays systems have enough memory
     - for iptables make sure conntrack_max and hashtable size match
-      - contrack_max = hashtable * 8 (if conntrack_max is set manually)
+      - contrack_max = hashtable * 8 (if conntrack_max is set manually,
+        see [net/netfilter/nf_conntrack_core.c](https://github.com/torvalds/linux/blob/6363b3f3ac5be096d08c8c504128befa0c033529/net/netfilter/nf_conntrack_core.c#L2003-L2042))
       - e.g. 1048576 = 131072 * 8
   - If there are spikes in the amount of incoming connections,
     have larger accept queues per listener:
