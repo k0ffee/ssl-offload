@@ -146,5 +146,5 @@ HAproxy logs:
     - Syslog: `rsyslog` can do random log sampling, might miss
       rare interesting events
     - central logging:
-      - HAproxy -> /var/log/haproxy.log -> Filebeat -> Elasticsearch -> Kibana
-      - HAproxy -> Syslog (UDP) -> Logstash -> Elasticsearch -> Kibana
+      - HAproxy → /var/log/haproxy.log → Filebeat → Elasticsearch → Kibana
+      - HAproxy → Syslog (UDP) → Logstash → Elasticsearch → Kibana
