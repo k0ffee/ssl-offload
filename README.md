@@ -23,7 +23,26 @@ SSL
 - Handshake time directly affects application response latency and CPU
   cycles consumption
   - Use TLS 1.3
-    - three step handshake instead of five steps
+    - three step handshake instead of four steps
+      ```
+      TLS 1.2 (full handshake):         TLS 1.3 (full handshake):
+         Client               Server    Client                  Server
+      ------------------------------    ------------------------------
+      0) ---> TCP SYN           --->    0) ---> TCP SYN           --->
+      0) <--- TCP SYN ACK       <---    0) <--- TCP SYN ACK       <---
+      0) ---> TCP ACK           --->    0) ---> TCP ACK           --->
+      1) ---> Client Hello      --->    1) ---> Client Hello,
+      2) <--- Server Hello,                     Key Share         --->
+              Certificate,              2) <--- Server Hello,
+              Server Hello Done <---            Key Share,
+      3) ---> Cipher Key Exchange,              Certificate,
+              Change Cipher Spec,               Certificate Verify,
+              Finished          --->            Finished          <---
+      4) <--- Change Cipher Spec,       3) ---> Finished,
+              Finished          <---            HTTP Request      --->
+      5) ---> HTTP Request      --->    4) <--- HTTP Response     <---
+      6) <--- HTTP Response     <---
+      ```
   - Use session resumption
     - default setting in newer HAproxy
     - Nginx: ssl_session_cache, ssl_session_timeout
@@ -33,7 +52,8 @@ SSL
 - Announce Server Preferred Ciphers
   - omit slow ciphers, 3DES
   - have a look at `openssl speed`
-  - consider using different compiler optimisation (-O3)
+  - consider using different compiler optimisation (-O3, default setting
+    for OpenSSL)
   - consider using AES-NI instructions in your CPU
     - Intel E7-4830 v4 has them (check with `openssl version -a`)
 
@@ -52,13 +72,13 @@ On multi-processor systems
   - HAproxy:
     - use option `nbproc 52` or `nbproc 104` depending if Hyperthreading
       is used, leaving 4 cores (8 threads) for other processes
-       ```
-       cpu-map 1 4
-       cpu-map 2 5
-       cpu-map 3 6
-       [...]
-       cpu-map 50 55
-       ```
+      ```
+      cpu-map 1 4
+      cpu-map 2 5
+      cpu-map 3 6
+      [...]
+      cpu-map 50 55
+      ```
     - maybe have four HAproxy master processes, one on each socket,
       with their child processes on the CPU cores of that socket
 
@@ -96,13 +116,13 @@ At application level:
     - `time_pretransfer`
     - `time_total`
     - see [`curl-stats.c`](https://github.com/k0ffee/ssl-offload/blob/master/curl-stats.c)
-    ```
-    % ./curl-stats
-    Total download seconds: 2.025787
-    Total pretransfer seconds: 1.453561
-    Name lookup seconds: 0.005250
-    Connect time seconds: 0.788709
-    ```
+      ```
+      % ./curl-stats
+      Total download seconds: 2.025787
+      Total pretransfer seconds: 1.453561
+      Name lookup seconds: 0.005250
+      Connect time seconds: 0.788709
+      ```
     - use this with an IP address, circumventing DNS latency,
       and watch connect time metric over time
 
