@@ -26,7 +26,7 @@ SSL
     - three step handshake instead of four steps
       ```
       TLS 1.2 (full handshake):         TLS 1.3 (full handshake):
-         Client               Server    Client                  Server
+         Client               Server       Client               Server
       ------------------------------    ------------------------------
       0) ---> TCP SYN           --->    0) ---> TCP SYN           --->
       0) <--- TCP SYN ACK       <---    0) <--- TCP SYN ACK       <---
@@ -158,14 +158,14 @@ HAproxy logs:
       - for less data: `option dontlog-normal`
       - for even lesser data: `http-request set-log-level silent if ...`
       - custom log-format:
-        - `%Th` - connection handshake time (SSL)
+        - `%Th` － connection handshake time (SSL)
           - "100% of handshakes above 40ms are from the US."
-        - `%Ti` - idle time before the HTTP request
+        - `%Ti` － idle time before the HTTP request
           - if handshake time is zero but idle time is high,
             we are reusing connections
         - if this is written to logfiles, have some monitoring plugin
           sampling from this logfile (`tail`) and calculate maximum,
-          99% percentile, median - it would be interesting to see
+          99% percentile, median － it would be interesting to see
           how many transactions we have and how many required a fresh
           SSL handshake
     - Syslog: `rsyslog` can do random log sampling, might miss

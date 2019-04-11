@@ -34,19 +34,19 @@ int main () {
         double val;
 
         res = curl_easy_getinfo(curl_handle, CURLINFO_TOTAL_TIME, &val);
-        if ((CURLE_OK == res) && (val>0))
+        if ((CURLE_OK == res) && (val > 0))
             printf("Total download seconds: %06f\n", val);
 
         res = curl_easy_getinfo(curl_handle, CURLINFO_PRETRANSFER_TIME, &val);
-        if ((CURLE_OK == res) && (val>0))
+        if ((CURLE_OK == res) && (val > 0))
             printf("Total pretransfer seconds: %06f\n", val);
 
         res = curl_easy_getinfo(curl_handle, CURLINFO_NAMELOOKUP_TIME, &val);
-        if ((CURLE_OK == res) && (val>0))
+        if ((CURLE_OK == res) && (val > 0))
             printf("Name lookup seconds: %06f\n", val);
 
         res = curl_easy_getinfo(curl_handle, CURLINFO_CONNECT_TIME, &val);
-            if ((CURLE_OK == res) && (val>0))
+            if ((CURLE_OK == res) && (val > 0))
                 printf("Connect time seconds: %06f\n", val);
     } else {
         fprintf(stderr, "Error while fetching '%s': %s\n",
