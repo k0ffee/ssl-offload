@@ -47,7 +47,7 @@ SSL
     - default setting in newer HAproxy
     - Nginx: ssl_session_cache, ssl_session_timeout
   - If TLS session resumption is useful in reducing latency, consider
-    TCP Fast Open ([RfC 7413](https://datatracker.ietf.org/doc/rfc7413/))
+    TCP Fast Open ([RFC 7413](https://tools.ietf.org/html/rfc7413))
     - reduces TCP handshake to two steps on reconnect
     - server side support: Linux, FreeBSD,
       [HAproxy](https://github.com/haproxy/haproxy/blob/153659f1ae69a1741109fcb95cac2c7d64f99a29/src/proto_tcp.c#L1041-L1065), Nginx
