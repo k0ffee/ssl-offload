@@ -1,5 +1,5 @@
 /*
- * Simple HTTP/S connection statistics program.
+ * Simple HTTP/HTTPS connection statistics program.
  * Adapted from the libcurl examples at <https://github.com/curl/curl/>.
  */
 
